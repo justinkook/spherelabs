@@ -4,11 +4,11 @@ import { formatDistanceToNowStrict } from 'date-fns';
 
 import Avatar from '../Avatar';
 
-interface CommentItemProps {
+interface WaitlistItemProps {
   data: Record<string, any>;
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ data = {} }) => {
+const WaitlistItem: React.FC<WaitlistItemProps> = ({ data = {} }) => {
   const router = useRouter();
 
   const goToUser = useCallback((ev: any) => {
@@ -73,4 +73,4 @@ const CommentItem: React.FC<CommentItemProps> = ({ data = {} }) => {
   )
 }
 
-export default CommentItem;
+export default WaitlistItem;

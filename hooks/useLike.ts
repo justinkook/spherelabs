@@ -7,9 +7,9 @@ import useLoginModal from "./useLoginModal";
 import usePost from "./useCollection";
 import usePosts from "./useCollections";
 
-const useLike = ({ postId, userId }: { postId: string, userId?: string }) => {
+const useLike = ({ collectionId, userId }: { collectionId: string, userId?: string }) => {
   const { data: currentUser } = useCurrentUser();
-  const { data: fetchedPost, mutate: mutateFetchedPost } = usePost(postId);
+  const { data: fetchedPost, mutate: mutateFetchedPost } = usePost(collectionId);
   const { mutate: mutateFetchedPosts } = usePosts(userId);
 
   const loginModal = useLoginModal();
@@ -29,9 +29,9 @@ const useLike = ({ postId, userId }: { postId: string, userId?: string }) => {
       let request;
 
       if (hasLiked) {
-        request = () => axios.delete('/api/like', { data: { postId } });
+        request = () => axios.delete('/api/like', { data: { collectionId } });
       } else {
-        request = () => axios.post('/api/like', { postId });
+        request = () => axios.post('/api/like', { collectionId });
       }
 
       await request();
@@ -42,7 +42,7 @@ const useLike = ({ postId, userId }: { postId: string, userId?: string }) => {
     } catch (error) {
       toast.error('Something went wrong');
     }
-  }, [currentUser, hasLiked, postId, mutateFetchedPosts, mutateFetchedPost, loginModal]);
+  }, [currentUser, hasLiked, collectionId, mutateFetchedPosts, mutateFetchedPost, loginModal]);
 
   return {
     hasLiked,

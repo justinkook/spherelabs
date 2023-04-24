@@ -3,7 +3,7 @@ import { ClipLoader } from "react-spinners";
 
 import useUser from "@/hooks/useUser";
 
-import PostFeed from "@/components/posts/PostFeed";
+import PostFeed from "@/components/collections/CollectionFeed";
 import Header from "@/components/Header";
 import UserBio from "@/components/users/UserBio";
 import UserHero from "@/components/users/UserHero";

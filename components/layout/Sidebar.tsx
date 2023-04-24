@@ -65,13 +65,6 @@ function Sidebar() {
       setIsLoading(true);
 
       const signature = await signMessage(Buffer.from('sign message'));
-      
-      await axios.post('/api/register', {
-        email: publicKey?.toBase58(),
-        password: signature.toString(),
-        username: publicKey?.toBase58(),
-        name: publicKey?.toBase58(),
-      });
 
       setIsLoading(false)
 

@@ -8,17 +8,17 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import useLike from '@/hooks/useLike';
 
 import Avatar from '../Avatar';
-interface PostItemProps {
+interface CollectionItemProps {
   data: Record<string, any>;
   userId?: string;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
+const CollectionItem: React.FC<CollectionItemProps> = ({ data = {}, userId }) => {
   const router = useRouter();
   const loginModal = useLoginModal();
 
   const { data: currentUser } = useCurrentUser();
-  const { hasLiked, toggleLike } = useLike({ postId: data.id, userId});
+  const { hasLiked, toggleLike } = useLike({ collectionId: data.id, userId});
 
   const goToUser = useCallback((ev: any) => {
     ev.stopPropagation();
@@ -26,7 +26,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
   }, [router, data.user.id]);
 
   const goToPost = useCallback(() => {
-    router.push(`/posts/${data.id}`);
+    router.push(`/collections/${data.id}`);
   }, [router, data.id]);
 
   const onLike = useCallback(async (ev: any) => {
@@ -133,4 +133,4 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
   )
 }
 
-export default PostItem;
+export default CollectionItem;
