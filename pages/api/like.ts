@@ -9,48 +9,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { postId } = req.body;
+    const { collectionId } = req.body;
 
     const { currentUser } = await serverAuth(req, res);
 
-    if (!postId || typeof postId !== 'string') {
+    if (!collectionId || typeof collectionId !== 'string') {
       throw new Error('Invalid ID');
     }
 
-    const post = await prisma.post.findUnique({
+    const collection = await prisma.collection.findUnique({
       where: {
-        id: postId
+        id: collectionId
       }
     });
 
-    if (!post) {
+    if (!collection) {
       throw new Error('Invalid ID');
     }
 
-    let updatedLikedIds = [...(post.likedIds || [])];
+    let updatedLikedIds = [...(collection.likedIds || [])];
 
     if (req.method === 'POST') {
       updatedLikedIds.push(currentUser.id);
       
       // NOTIFICATION PART START
       try {
-        const post = await prisma.post.findUnique({
+        const collection = await prisma.collection.findUnique({
           where: {
-            id: postId,
+            id: collectionId,
           }
         });
     
-        if (post?.userId) {
+        if (collection?.userId) {
           await prisma.notification.create({
             data: {
               body: 'Someone liked your tweet!',
-              userId: post.userId
+              userId: collection.userId
             }
           });
     
           await prisma.user.update({
             where: {
-              id: post.userId
+              id: collection.userId
             },
             data: {
               hasNotification: true
@@ -67,16 +67,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       updatedLikedIds = updatedLikedIds.filter((likedId) => likedId !== currentUser?.id);
     }
 
-    const updatedPost = await prisma.post.update({
+    const updatedCollection = await prisma.collection.update({
       where: {
-        id: postId
+        id: collectionId
       },
       data: {
         likedIds: updatedLikedIds
       }
     });
 
-    return res.status(200).json(updatedPost);
+    return res.status(200).json(updatedCollection);
   } catch (error) {
     console.log(error);
     return res.status(400).end();
