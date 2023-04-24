@@ -13,11 +13,11 @@ import Button from './Button';
 
 interface FormProps {
   placeholder: string;
-  isComment?: boolean;
+  isWaitlist?: boolean;
   collectionId?: string;
 }
 
-const Form: React.FC<FormProps> = ({ placeholder, isComment, collectionId }) => {
+const Form: React.FC<FormProps> = ({ placeholder, isWaitlist, collectionId }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
 
@@ -32,11 +32,10 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, collectionId }) => 
     try {
       setIsLoading(true);
 
-      const url = isComment ? `/api/comments?collectionId=${collectionId}` : '/api/collections';
+      const url = isWaitlist ? `/api/waitlists?collectionId=${collectionId}` : '/api/collections';
 
       await axios.post(url, { body });
 
-      toast.success('Tweet created');
       setBody('');
       mutatePosts();
       mutatePost();
@@ -45,7 +44,7 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, collectionId }) => 
     } finally {
       setIsLoading(false);
     }
-  }, [body, mutatePosts, isComment, collectionId, mutatePost]);
+  }, [body, mutatePosts, isWaitlist, collectionId, mutatePost]);
 
   return (
     <div className="border-b-[1px] border-neutral-800 px-5 py-2">

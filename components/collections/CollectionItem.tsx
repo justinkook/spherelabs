@@ -106,7 +106,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({ data = {}, userId }) =>
             ">
               <AiOutlineMessage size={20} />
               <p>
-                {data.comments?.length || 0}
+                {data.waitlists?.length || 0}
               </p>
             </div>
             <div
