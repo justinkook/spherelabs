@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+env variables needed
+```
+DATABASE_URL="mongodb+srv://justinkook:testpassword@cluster0.keblyxr.mongodb.net/test"
+NEXTAUTH_JWT_SECRET="NEXTAUTH_JWT_SECRET"
+NEXTAUTH_SECRET="NEXTAUTH_SECRET"
+```
+
+Also need to migrate prisma schemas to db initial start
+```
+npx prisma generate
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
