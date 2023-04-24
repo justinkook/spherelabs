@@ -8,19 +8,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { postId } = req.query;
+    const { collectionId } = req.query;
 
-    if (!postId || typeof postId !== 'string') {
+    if (!collectionId || typeof collectionId !== 'string') {
       throw new Error('Invalid ID');
     }
 
-    const post = await prisma.post.findUnique({
+    const collection = await prisma.collection.findUnique({
       where: {
-        id: postId,
+        id: collectionId,
       },
       include: {
         user: true,
-        comments: {
+        waitlist: {
           include: {
             user: true
           },
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
-    return res.status(200).json(post);
+    return res.status(200).json(collection);
   } catch (error) {
     console.log(error);
     return res.status(400).end();

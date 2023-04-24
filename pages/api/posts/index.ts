@@ -14,14 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { currentUser } = await serverAuth(req, res);
       const { body } = req.body;
 
-      const post = await prisma.post.create({
+      const collection = await prisma.collection.create({
         data: {
           body,
           userId: currentUser.id
         }
       });
 
-      return res.status(200).json(post);
+      return res.status(200).json(collection);
     }
 
     if (req.method === 'GET') {
@@ -29,26 +29,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       console.log({ userId })
 
-      let posts;
+      let collections;
 
       if (userId && typeof userId === 'string') {
-        posts = await prisma.post.findMany({
+        collections = await prisma.collection.findMany({
           where: {
             userId
           },
           include: {
             user: true,
-            comments: true
+            waitlist: true
           },
           orderBy: {
             createdAt: 'desc'
           },
         });
       } else {
-        posts = await prisma.post.findMany({
+        collections = await prisma.collection.findMany({
           include: {
             user: true,
-            comments: true
+            waitlist: true
           },
           orderBy: {
             createdAt: 'desc'
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       }
 
-      return res.status(200).json(posts);
+      return res.status(200).json(collections);
     }
   } catch (error) {
     console.log(error);
