@@ -22,6 +22,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import CollectionFeed from '../collections/CollectionFeed';
 
 const truncateRegex = /^([a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;
 
@@ -80,7 +81,7 @@ function Sidebar() {
     }
   })();
   }
-  }, [publicKey, signMessage, connected]);
+  }, [publicKey, signMessage, connected, currentUser]);
 
   return (
     <>
@@ -292,8 +293,10 @@ function Sidebar() {
             </div>
           </div>
 
-          <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{/* Your content */}</div>
+          <main>
+            <div className="px-4 sm:px-6 lg:px-8">
+              <CollectionFeed />
+            </div>
           </main>
         </div>
       </div>

@@ -16,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const collection = await prisma.collection.create({
         data: {
+          name: 'New Collection',
           body,
           userId: currentUser.id
         }
@@ -46,10 +47,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       } else {
         collections = await prisma.collection.findMany({
-          include: {
-            user: true,
-            waitlists: true
-          },
           orderBy: {
             createdAt: 'desc'
           }
