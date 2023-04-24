@@ -14,6 +14,8 @@ Also need to migrate prisma schemas to db initial start
 npx prisma generate
 ```
 
+Due to time constraints, I had to use a simple email / password auth for nextAuth. Later can update to using Solana Provider.
+
 ## Available Scripts
 
 In the project directory, you can run:

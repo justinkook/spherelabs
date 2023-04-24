@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic';
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
@@ -19,6 +19,9 @@ import {
   WalletMultiButton
 } from '@solana/wallet-adapter-react-ui';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 const truncateRegex = /^([a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;
 
@@ -50,8 +53,41 @@ function classNames(...classes: string[]) {
 
 function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: currentUser } = useCurrentUser();
   const { connection } = useConnection();
   const { publicKey, signMessage, connected} = useWallet();
+
+  useEffect(() => {
+    if (connected && signMessage && publicKey && !currentUser) {
+      (async () => {
+    try {
+      setIsLoading(true);
+
+      const signature = await signMessage(Buffer.from('sign message'));
+      
+      await axios.post('/api/register', {
+        email: publicKey?.toBase58(),
+        password: signature.toString(),
+        username: publicKey?.toBase58(),
+        name: publicKey?.toBase58(),
+      });
+
+      setIsLoading(false)
+
+      signIn('credentials', {
+        email: publicKey?.toBase58(),
+        password: signature.toString(),
+      });
+
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setIsLoading(false);
+    }
+  })();
+  }
+  }, [publicKey, signMessage, connected]);
 
   return (
     <>
