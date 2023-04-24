@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import dynamic from 'next/dynamic';
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -26,6 +27,11 @@ const truncateWalletAddress = (address: string) => {
   if (!match) return address;
   return `${match[1]}…${match[2]}`;
 };
+
+const WalletMultiButtonDynamic = dynamic(
+  async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 
 const navigation = [
   { name: 'Available', href: '#', icon: HomeIcon, current: true },
@@ -193,7 +199,7 @@ function Sidebar() {
             <div className="flex flex-col flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <div className="flex items-center gap-x-4 lg:gap-x-6 flex-row-reverse">
                 {!connected && !publicKey ? (
-                  <WalletMultiButton/>
+                  <WalletMultiButtonDynamic/>
                 ) : (
                 <Menu as="div" className="relative border-black rounded">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
