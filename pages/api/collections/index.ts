@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           include: {
             user: true,
-            waitlist: true
+            waitlists: true
           },
           orderBy: {
             createdAt: 'desc'
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         collections = await prisma.collection.findMany({
           include: {
             user: true,
-            waitlist: true
+            waitlists: true
           },
           orderBy: {
             createdAt: 'desc'

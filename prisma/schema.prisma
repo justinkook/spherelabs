@@ -23,7 +23,7 @@ model User {
   hashedPassword  String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  waitlistIds     String[] @db.ObjectId
+  followingIds    String[] @db.ObjectId
   hasNotification Boolean?
 
   collections   Collection[]

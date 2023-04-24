@@ -5,8 +5,8 @@ import { toast } from 'react-hot-toast';
 import useLoginModal from '@/hooks/useLoginModal';
 import useRegisterModal from '@/hooks/useRegisterModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import usePosts from '@/hooks/useCollections';
-import usePost from '@/hooks/useCollection';
+import useCollections from '@/hooks/useCollections';
+import useCollection from '@/hooks/useCollection';
 
 import Avatar from './Avatar';
 import Button from './Button';
@@ -22,8 +22,8 @@ const Form: React.FC<FormProps> = ({ placeholder, isWaitlist, collectionId }) =>
   const loginModal = useLoginModal();
 
   const { data: currentUser } = useCurrentUser();
-  const { mutate: mutatePosts } = usePosts();
-  const { mutate: mutatePost } = usePost(collectionId as string);
+  const { mutate: mutatePosts } = useCollections();
+  const { mutate: mutatePost } = useCollection(collectionId as string);
 
   const [body, setBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);

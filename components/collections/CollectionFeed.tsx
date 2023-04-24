@@ -1,11 +1,11 @@
 import CollectionItem from './CollectionItem';
 import useCollections from '@/hooks/useCollections';
 
-interface PostFeedProps {
+interface CollectionFeedProps {
   userId?: string;
 }
 
-const CollectionFeed: React.FC<PostFeedProps> = ({ userId }) => {
+const CollectionFeed: React.FC<CollectionFeedProps> = ({ userId }) => {
   const { data: collections = [] } = useCollections(userId);
 
   return (

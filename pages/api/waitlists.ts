@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { currentUser } = await serverAuth(req, res);
-    const { body } = req.body;
     const { collectionId } = req.query;
 
     if (!collectionId || typeof collectionId !== 'string') {
@@ -19,7 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const waitlist = await prisma.waitlist.create({
       data: {
-        body,
         userId: currentUser.id,
         collectionId
       }
