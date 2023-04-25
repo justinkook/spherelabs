@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Sphere Labs
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img width="1435" alt="Screen Shot 2023-04-24 at 9 08 56 PM" src="https://user-images.githubusercontent.com/23103037/234150378-8c619b7e-cf31-44ad-97df-d075196398dc.png">
 
 env variables needed
 ```
