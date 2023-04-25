@@ -26,7 +26,7 @@ const CollectionView = () => {
     <>
       <Header showBackArrow label="Tweet" />
       <CollectionItem data={fetchedCollections} />
-      <Form collectionId={collectionId as string} isComment placeholder="Tweet your reply" />
+      <Form collectionId={collectionId as string} isWaitlist placeholder="Tweet your reply" />
       <WaitlistFeed waitlists={fetchedCollections?.waitlist} />
     </>
    );
