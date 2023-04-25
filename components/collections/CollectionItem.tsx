@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { formatDistanceToNowStrict } from "date-fns";
 
@@ -9,6 +9,9 @@ import useLike from "@/hooks/useLike";
 
 import Avatar from "../Avatar";
 import LoginModal from "../modals/LoginModal";
+import useCollections from "@/hooks/useCollections";
+import useCollection from "@/hooks/useCollection";
+import axios from "axios";
 interface CollectionItemProps {
   data: Record<string, any>;
   userId?: string;
@@ -22,6 +25,41 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   const loginModal = useLoginModal();
 
   const { data: currentUser } = useCurrentUser();
+
+  const { mutate: mutateCollections } = useCollections();
+  const { data: fetchedPost, mutate: mutateCollection } = useCollection(data.id as string);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const checkIfOnWaitlist = (waitlist: any) => {
+    if (waitlist && waitlist.length > 0) {
+      return waitlist.filter((item: Record<string, any>) => {
+        return item.userId === currentUser?.id;
+      });
+    } else {
+      return false;
+    }
+  };
+
+  const onSubmit = useCallback(async () => {
+    if (checkIfOnWaitlist(fetchedPost.waitlists)) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+
+      const url = `/api/waitlists?collectionId=${data.id}`;
+
+      await axios.post(url);
+
+      mutateCollections();
+      mutateCollection();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [mutateCollections, data.id, mutateCollection]);
 
   return (
     <div key={data.id} className="group relative m-25 min-h-50 min-w-400">
@@ -39,8 +77,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
         <p className="mt-1 text-sm font-medium text-gray-900">{data.name}</p>
       </h2>
       <p className="mt-1 text-sm text-gray-500">{data.body}</p>
-      <button className="rounded-full bg-[#3960EF] text-white min-w-full p-2 mt-5 absolute right-0 -bottom-20">
-      {data.waitlist 
+      <button className="rounded-full bg-[#3960EF] text-white min-w-full p-2 mt-5 absolute right-0 -bottom-20" onClick={onSubmit}>
+      {fetchedPost && checkIfOnWaitlist(fetchedPost.waitlists)
       ? "Claim"
       : "Join Waitlist"}
       </button>
