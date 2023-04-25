@@ -27,13 +27,13 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   const { data: currentUser } = useCurrentUser();
 
   const { mutate: mutateCollections } = useCollections();
-  const { data: fetchedPost, mutate: mutateCollection } = useCollection(data.id as string);
+  const { mutate: mutateCollection } = useCollection(data.id as string);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const checkIfOnWaitlist = (waitlist: any) => {
     if (waitlist && waitlist.length > 0) {
-      return waitlist.filter((item: Record<string, any>) => {
+      return !!waitlist.filter((item: Record<string, any>) => {
         return item.userId === currentUser?.id;
       });
     } else {
@@ -42,7 +42,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   };
 
   const onSubmit = useCallback(async () => {
-    if (checkIfOnWaitlist(fetchedPost.waitlists)) {
+    if (checkIfOnWaitlist(data.waitlists)) {
       return;
     }
     try {
@@ -78,7 +78,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
       </h2>
       <p className="mt-1 text-sm text-gray-500">{data.body}</p>
       <button className="rounded-full bg-[#3960EF] text-white min-w-full p-2 mt-5 absolute right-0 -bottom-20" onClick={onSubmit}>
-      {fetchedPost && checkIfOnWaitlist(fetchedPost.waitlists)
+      {checkIfOnWaitlist(data.waitlists)
       ? "Claim"
       : "Join Waitlist"}
       </button>

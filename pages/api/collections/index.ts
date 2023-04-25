@@ -47,6 +47,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       } else {
         collections = await prisma.collection.findMany({
+          include: {
+            waitlists: true
+          },
           orderBy: {
             createdAt: 'desc'
           }
